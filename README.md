@@ -47,6 +47,24 @@ Uma vez que a cidade preferida está definida, o usuário pode simplesmente perg
 - **DynamoDB:** Serviço de banco de dados NoSQL da AWS usado para armazenar a cidade preferida do usuário.
 - **OpenWeatherMap API:** API pública utilizada para obter informações climáticas.
 
+## Como implementar e testar
+Para testar a skill desenvolvida para a alexa, primeiro precisamos criar um modelo de base no site da [Amazon] (https://developer.amazon.com/alexa)
+- Clicar em "Create Skill"
+- Dar um nome a essa skill (não precisa ser nenhum específico)
+- Colocar a linguagem como portugues
+- Colocar o tipo da experiência em "Other"
+- Colcoar o moelo da skill como "custom"
+- E escolher a linhuagem como "Python"
+- Em templates clique em "Import skill", e coloque o link desse repositório no campo disponível
+- Em seguida é só clicar em importar e esperar (pode levar alguns instantes)
+- Uma tela de gerência da skill ira se abrir, clique em "invocations" em seguida "Skill Invocation Name" e escolha um nome de invocação para sua skill
+- Em seguida é só clicar em build skill e inicar o uso da nossa skill
+- (Caso haja problemas com persistencia de dados, trocar a url que define que qual banco de dados esta sendo usado)
+
+Para ver nossa skill da alexa funcionando, clique em "Build Skill", em seguida "Test", digite o comando para iniciar a skill, e coloque os comandos para que ela responda. A lista de comandos esta em "Interaction Model" > "Intents", mas para facilitar o deixaremos alguns exemplos aqui. (lembre-se de ativar a skill toda vez que for utilizar)
+- Para saber o clima de uma cidade específica: "Como está o tempo em (cidade desejada) hoje"
+- Para escolher uma cidade como favorita: "Quero salvar (cidade desejada) como minha cidade favorita"
+- Para saber sobre sua cidade favorita: "Quero saber a temperatura na minha cidade favorita"
 
 ## Contribuições
 
