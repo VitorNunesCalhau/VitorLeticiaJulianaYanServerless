@@ -17,24 +17,27 @@ table = dynamodb.Table('78eb67a7-2429-49dc-a3a2-5eafb37ba32b')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-traducoes_tempo = {
-    "Thunderstorm": "Tempestade",
-    "Drizzle": "Garoa",
-    "Rain": "Chuva",
-    "Snow": "Neve",
+#==xX Traduções do tempo Xx====================================================================================================================
+WEATHER_TRANSLATIONS = {
+    "Ash": "Cinzas",
     "Clear": "Céu Limpo",
     "Clouds": "Nublado",
-    "Mist": "Névoa",
-    "Smoke": "Fumaça",
-    "Haze": "Neblina",
+    "Drizzle": "Garoa",
     "Dust": "Poeira",
     "Fog": "Nevoeiro",
+    "Haze": "Neblina",
+    "Mist": "Névoa",
+    "Rain": "Chuva",
     "Sand": "Areia",
-    "Ash": "Cinzas",
+    "Smoke": "Fumaça",
+    "Snow": "Neve",
     "Squall": "Rajada",
+    "Thunderstorm": "Tempestade",
     "Tornado": "Tornado"
 }
+#==============================================================================================================================================
 
+#==xX Iniciar skill Xx=========================================================================================================================
 class LaunchRequestHandler(AbstractRequestHandler):
     """Handler for Skill Launch."""
     def can_handle(self, handler_input):
@@ -42,7 +45,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        speak_output = "Bem vindo ao seu app de tempo!"
+        speak_output = "sua skill de tempo foi inicializada"
 
         return (
             handler_input.response_builder
@@ -50,13 +53,14 @@ class LaunchRequestHandler(AbstractRequestHandler):
                 .ask(speak_output)
                 .response
         )
-
 #==============================================================================================================================================
-class ClimaCidadeFavoritaIntentHandler(AbstractRequestHandler):
-    """Handler para o Intent ClimaCidadeFavoritaIntent."""
+
+#==xX tratar comandos com cidade favorita Xx===================================================================================================
+class ClimateCityFavoriteIntentHandler(AbstractRequestHandler):
+    """Handler para o Intent ClimateCityFavoriteIntent."""
 
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("ClimaCidadeFavoritaIntent")(handler_input)
+        return ask_utils.is_intent_name("ClimateCityFavoriteIntent")(handler_input)
 
     def handle(self, handler_input):
         try:
@@ -73,7 +77,7 @@ class ClimaCidadeFavoritaIntentHandler(AbstractRequestHandler):
                 api_address = "http://api.openweathermap.org/data/2.5/weather?appid=1171a0db15c1a723114891a7eaefc8ce&units=metric&q="
                 url = api_address + cidade
                 json_data = requests.get(url).json()
-                formatted_json = traducoes_tempo.get(json_data['weather'][0]['main'], json_data['weather'][0]['main'])
+                formatted_json = WEATHER_TRANSLATIONS.get(json_data['weather'][0]['main'], json_data['weather'][0]['main'])
                 description = json_data['weather'][0]['description']
                 temp = json_data['main']['temp']
                 name = json_data['name']
@@ -94,9 +98,10 @@ class ClimaCidadeFavoritaIntentHandler(AbstractRequestHandler):
 #==============================================================================================================================================
 
 
-class DefinirCidadeFavoritaIntentHandler(AbstractRequestHandler):
+#==xX Define cidade favorita Xx================================================================================================================
+class SetFavoriteCityIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("DefinirCidadeFavoritaIntent")(handler_input)
+        return ask_utils.is_intent_name("SetFavoriteCityIntent")(handler_input)
 
     def handle(self, handler_input):
         user_input = handler_input.request_envelope.request.intent.slots["city"].value
@@ -116,9 +121,9 @@ class DefinirCidadeFavoritaIntentHandler(AbstractRequestHandler):
             speak_output = f"Ocorreu um erro ao definir a cidade favorita: {e}"
 
         return handler_input.response_builder.speak(speak_output).response
+#==============================================================================================================================================
 
-
-
+#==xX Define cidade favorita Xx================================================================================================================
 class WeatherIntentHandler(AbstractRequestHandler):
     """Handler for Weather Intent."""
     def can_handle(self, handler_input):
@@ -131,7 +136,7 @@ class WeatherIntentHandler(AbstractRequestHandler):
         api_address = "http://api.openweathermap.org/data/2.5/weather?appid=1171a0db15c1a723114891a7eaefc8ce&units=metric&q="
         url = api_address + city
         json_data = requests.get(url).json()
-        formatted_json = traducoes_tempo.get(json_data['weather'][0]['main'], json_data['weather'][0]['main'])
+        formatted_json = WEATHER_TRANSLATIONS.get(json_data['weather'][0]['main'], json_data['weather'][0]['main'])
         description = json_data['weather'][0]['description']
         temp = json_data['main']['temp']
         name = json_data['name']
@@ -146,10 +151,10 @@ class WeatherIntentHandler(AbstractRequestHandler):
                 .ask(repromptOutput)
                 .response
         )
+#==============================================================================================================================================
 
 
-
-
+#==xX Define cidade favorita Xx================================================================================================================
 class HelpIntentHandler(AbstractRequestHandler):
     """Handler for Help Intent."""
     def can_handle(self, handler_input):
@@ -164,8 +169,9 @@ class HelpIntentHandler(AbstractRequestHandler):
                 .ask(speak_output)
                 .response
         )
+#==============================================================================================================================================
 
-
+#==xX Encerra skill Xx=========================================================================================================================
 class CancelOrStopIntentHandler(AbstractRequestHandler):
     """Single handler for Cancel and Stop Intent."""
     def can_handle(self, handler_input):
@@ -173,15 +179,16 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
                 ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input))
 
     def handle(self, handler_input):
-        speak_output = "Goodbye! see you soon."
+        speak_output = "Skill finalizada"
 
         return (
             handler_input.response_builder
                 .speak(speak_output)
                 .response
         )
+#==============================================================================================================================================
 
-
+#==xX Encerra skill Xx=========================================================================================================================
 class SessionEndedRequestHandler(AbstractRequestHandler):
     """Handler for Session End."""
     def can_handle(self, handler_input):
@@ -191,8 +198,9 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
 
 
         return handler_input.response_builder.response
+#==============================================================================================================================================
 
-
+#==xX D Xx=====================================================================================================================================
 class IntentReflectorHandler(AbstractRequestHandler):
     """The intent reflector is used for interaction model testing and debugging.
     It will simply repeat the intent the user said. You can create custom handlers
@@ -211,8 +219,9 @@ class IntentReflectorHandler(AbstractRequestHandler):
                 .speak(speak_output)
                 .response
         )
+#==============================================================================================================================================
 
-
+#==xX Tratativa de erros Xx====================================================================================================================
 class CatchAllExceptionHandler(AbstractExceptionHandler):
     """Generic error handling to capture any syntax or routing errors. If you receive an error
     stating the request handler chain is not found, you have not implemented a handler for
@@ -224,7 +233,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
     def handle(self, handler_input, exception):
         logger.error(exception, exc_info=True)
 
-        speak_output = "Sorry, I had trouble doing what you asked. Please try again."
+        speak_output = "Ocorreu um erro, tente novamente"
 
         return (
             handler_input.response_builder
@@ -232,13 +241,13 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
                 .ask(speak_output)
                 .response
         )
-
+#==============================================================================================================================================
 
 sb = SkillBuilder()
 
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler(DefinirCidadeFavoritaIntentHandler())  
-sb.add_request_handler(ClimaCidadeFavoritaIntentHandler())
+sb.add_request_handler(SetFavoriteCityIntentHandler())  
+sb.add_request_handler(ClimateCityFavoriteIntentHandler())
 sb.add_request_handler(WeatherIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())

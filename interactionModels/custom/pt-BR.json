@@ -31,9 +31,10 @@
           ],
           "name": "WeatherIntent",
           "samples": [
+            "Em {city} como está o tempo hoje",
+            "Como está o tempo hoje em {city}",
             "Como está o tempo em {city} hoje",
             "Previsão do tempo para {city}",
-            "Me diga o tempo em {city}",
             "Quero saber a temperatura em {city}",
             "qual o clima na cidade de {city}",
             "me de o tempo em {city}",
@@ -47,8 +48,9 @@
               "type": "AMAZON.City"
             }
           ],
-          "name": "DefinirCidadeFavoritaIntent",
+          "name": "SetFavoriteCityIntent",
           "samples": [
+            "quero minha cidade favorita como {city}",
             "Lembrar que minha cidade favorita é {city}",
             "{city} é a minha cidade favorita",
             "Quero salvar {city} como minha cidade favorita",
@@ -58,7 +60,7 @@
         },
         {
           "slots": [],
-          "name": "ClimaCidadeFavoritaIntent",
+          "name": "ClimateCityFavoriteIntent",
           "samples": [
             "Quero saber a temperatura na minha cidade favorita",
             "Me diga o tempo na minha cidade favorita",
